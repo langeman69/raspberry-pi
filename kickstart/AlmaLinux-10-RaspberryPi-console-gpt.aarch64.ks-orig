@@ -19,21 +19,10 @@ shutdown
 bootloader --location=none
 lang en_US.UTF-8
 
-# LVM Disk setup
+# Disk setup
 clearpart --initlabel --all --disklabel=gpt
 part /boot --fstype=vfat --size=500 --label=cidata --ondisk=sda
-part pv.88 --fstype="lvmpv" --ondisk=sda --size=2048 --grow
-volgroup vg_os --pesize=4096 pv.88
-logvol /var/log --fstype="xfs" --size=200 --label="log" --name=lv_varlog --vgname=vg_os
-logvol /usr --fstype="xfs" --size=2048 --label="usr" --name=lv_usr --vgname=vg_os
-logvol /var --fstype="xfs" --size=200 --label="var" --name=lv_var --vgname=vg_os
-logvol /home --fstype="xfs" --size=100 --label="home" --name=lv_home --vgname=vg_os
-logvol /tmp --fstype="xfs" --size=100 --label="tmp" --name=lv_tmp --vgname=vg_os
-logvol /var/log/audit --fstype="xfs" --size=100 --label="audit" --name=lv_audit --vgname=vg_os
-logvol /var/log/journal --fstype="xfs" --size=100 --label="journal" --name=lv_journal --vgname=vg_os
-logvol /opt --fstype="xfs" --size=50 --label="opt" --name=lv_opt --vgname=vg_os
-logvol /var/tmp --fstype="xfs" --size=100 --label="vartmp" --name=lv_vartmp --vgname=vg_os
-logvol / --fstype="xfs" --size=2048 --label="root" --name=lv_root --vgname=vg_os
+part / --fstype=ext4 --size=2400 --label=rootfs --ondisk=sda
 
 # Package setup
 %packages
@@ -60,7 +49,6 @@ raspberrypi2-kernel4-modules-core
 raspberrypi2-kernel4-modules-extra
 nano
 libgpiod-utils
-xfsprogs
 %end
 
 %post
